@@ -6,21 +6,24 @@ import DropboxLogo from "../images/dropbox-seeklogo.png";
 import { SignedIn, SignInButton, UserButton } from "@clerk/nextjs";
 import { SignedOut } from "@clerk/clerk-react";
 import { ThemeToggler } from "./ThemeToggler";
+import { Button } from "./ui/button";
 
 function Header() {
   return (
-    <header className="flex items-center justify-between">
-      <Link href="/" className="flex items-center space-x-2">
-        <div className="bg-dropbox w-fit p-3">
+    <header className="flex items-center justify-between px-7 py-4">
+      <Link href="/" className="flex items-center space-x-4">
+        <div className="bg-dropbox w-fit p-2">
           <Image src={DropboxLogo} alt="dropbox logo" width={30} />
         </div>
-        <h1 className="font-bold text-xl">Dropbox</h1>
+        <h1 className="font-bold text-2xl">Dropbox</h1>
       </Link>
 
-      <div>
+      <div className="flex items-center space-x-4 pr-3">
         <ThemeToggler />
         <SignedOut>
-          <SignInButton fallbackRedirectUrl={"/dashboard"} mode={"modal"} />
+          <Button className="bg-dropbox text-base rounded-xl dark:text-white">
+            <SignInButton fallbackRedirectUrl={"/dashboard"} mode={"modal"} />
+          </Button>
         </SignedOut>
         <SignedIn>
           <UserButton />
