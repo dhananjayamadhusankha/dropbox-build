@@ -19,6 +19,7 @@ const config = {
     },
     extend: {
       colors: {
+        dropbox: "#0061FE",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
