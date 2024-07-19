@@ -22,11 +22,11 @@ function Header() {
         <ThemeToggler />
         <SignedOut>
           <Button className="bg-dropbox text-base rounded-xl dark:text-white">
-            <SignInButton fallbackRedirectUrl={"/dashboard"} mode={"modal"} />
+            <SignInButton afterSignInUrl={"/dashboard"} mode={"modal"} />
           </Button>
         </SignedOut>
         <SignedIn>
-          <UserButton />
+          <UserButton afterSignOutUrl="/" />
         </SignedIn>
       </div>
     </header>
