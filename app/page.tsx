@@ -39,7 +39,7 @@ export default function Home() {
       </div>
 
       <div
-        className={`text-center p-6 bg-[#f7f5f2] ${bricolage_grotesque.className}`}
+        className={`text-center p-6 bg-[#f7f5f2] text-slate-900 ${bricolage_grotesque.className}`}
       >
         <p className={`font-normal pt-5 text-3xl sm:text-4xl`}>
           All the tools you need in one plan

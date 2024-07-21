@@ -1,3 +1,5 @@
+"use client"
+
 import { db, storage } from "@/firebase";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
@@ -8,7 +10,7 @@ import DropzoneComponent from "react-dropzone";
 
 function Dropzone() {
   const [loading, setLoading] = useState<boolean>(false);
-  const { isSignedIn, user, isLoaded } = useUser();
+  const { user } = useUser();
 
   const onDrag = (accepetedFiles: File[]) => {
     accepetedFiles.forEach((file) => {
