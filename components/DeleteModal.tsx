@@ -32,16 +32,20 @@ function DeleteModal() {
     const fileRef = ref(storage, `users/${user.id}/files/${fileId}`);
 
     try {
-      deleteObject(fileRef).then(() => {
-        deleteDoc(doc(db, "users", user.id, "files", fileId)).then(() => {
-          console.log("Deleted");
+      deleteObject(fileRef)
+        .then(() => {
+          deleteDoc(doc(db, "users", user.id, "files", fileId)).then(() => {
+            console.log("Deleted");
+          });
+        })
+        .finally(() => {
+          console.log("Deleted the file");
+          setIsDeleteModalOpen(false);
         });
-      });
     } catch (error) {
       console.error(error);
+      setIsDeleteModalOpen(false);
     }
-
-    setIsDeleteModalOpen(false);
   };
 
   return (

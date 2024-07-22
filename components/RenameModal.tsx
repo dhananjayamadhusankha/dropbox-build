@@ -33,14 +33,18 @@ function RenameModal() {
       const newFileName = `${input}${fileType}`;
       await updateDoc(doc(db, "users", user.id, "files", fileId), {
         fileName: newFileName,
-      }).then(() => {
-        console.log("Updated the file");
-        setInput("");
-      });
+      })
+        .then(() => {
+          console.log("Updated the file");
+          setInput("");
+        })
+        .finally(() => {
+          setIsRenameModalOpen(false);
+        });
     } catch (error) {
       console.error(error);
+      setIsRenameModalOpen(false);
     }
-    setIsRenameModalOpen(false);
   };
   return (
     <Dialog

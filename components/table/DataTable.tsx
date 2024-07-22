@@ -118,7 +118,7 @@ export function DataTable<TData, TValue>({
                 <TableCell key={(row.original as FileType).id}>
                   <Button
                     variant={"outline"}
-                    className="hover:bg-red-500"
+                    className="hover:bg-red-800"
                     onClick={() =>
                       openDeleteModal((row.original as FileType).id)
                     }
