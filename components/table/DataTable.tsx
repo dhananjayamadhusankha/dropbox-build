@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -14,11 +14,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
+import { Pencil, TrashIcon } from "lucide-react";
+import { Button } from "../ui/button";
+import { useAppStore } from "@/store/store";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
 export function DataTable<TData, TValue>({
@@ -29,7 +32,37 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-  })
+  });
+
+  const [
+    fileId,
+    fileName,
+    setFileId,
+    setFileName,
+    isRenameModalOpen,
+    isDeleteModalOpen,
+    setIsRenameModalOpen,
+    setIsDeleteModalOpen,
+  ] = useAppStore((state) => [
+    state.fileId,
+    state.fileName,
+    state.setFileId,
+    state.setFileName,
+    state.isRenameModalOpen,
+    state.isDeleteModalOpen,
+    state.setIsRenameModalOpen,
+    state.setIsDeleteModalOpen,
+  ]);
+
+  const openDeleteModal = (fileId: string) => {
+    setFileId(fileId);
+    setIsDeleteModalOpen(true);
+  };
+  const openRenameModal = (fileId: string, fileName: string) => {
+    setFileId(fileId);
+    setFileName(fileName);
+    setIsDeleteModalOpen(true);
+  };
 
   return (
     <div className="rounded-md border">
@@ -47,7 +80,7 @@ export function DataTable<TData, TValue>({
                           header.getContext()
                         )}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
@@ -61,20 +94,54 @@ export function DataTable<TData, TValue>({
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {cell.column.id === "timestamp" ? (
+                      <div className="flex flex-col">
+                        <div className="text-sm">
+                          {(cell.getValue() as Date).toLocaleDateString()}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {(cell.getValue() as Date).toLocaleTimeString()}
+                        </div>
+                      </div>
+                    ) : cell.column.id === "fileName" ? (
+                      <p
+                        className="underline text-blue-500 hover:cursor-pointer flex items-center"
+                        onClick={() =>
+                          openRenameModal(
+                            (row.original as FileType).id,
+                            (row.original as FileType).fileName
+                          )
+                        }
+                      >
+                        {cell.getValue() as string}{" "}
+                        <Pencil size={15} className="ml-2" />
+                      </p>
+                    ) : (
+                      flexRender(cell.column.columnDef.cell, cell.getContext())
+                    )}
                   </TableCell>
                 ))}
+                <TableCell key={(row.original as FileType).id}>
+                  <Button variant={"outline"}>
+                    <TrashIcon
+                      size={20}
+                      onClick={() =>
+                        openDeleteModal((row.original as FileType).id)
+                      }
+                    />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                You Have No Files.
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }
