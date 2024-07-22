@@ -21,7 +21,7 @@ function Header() {
       <div className="flex items-center space-x-4 pr-3">
         <ThemeToggler />
         <SignedOut>
-          <Button className="bg-dropbox text-base rounded-xl dark:text-white">
+          <Button className="bg-dropbox text-base rounded-xl dark:text-white hover:bg-[#0244c7]">
             <SignInButton afterSignInUrl={"/dashboard"} mode={"modal"} />
           </Button>
         </SignedOut>

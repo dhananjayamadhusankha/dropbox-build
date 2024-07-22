@@ -18,6 +18,7 @@ import {
 import { Pencil, TrashIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useAppStore } from "@/store/store";
+import DeleteModal from "./DeleteModal";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -34,25 +35,13 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const [
-    fileId,
-    fileName,
-    setFileId,
-    setFileName,
-    isRenameModalOpen,
-    isDeleteModalOpen,
-    setIsRenameModalOpen,
-    setIsDeleteModalOpen,
-  ] = useAppStore((state) => [
-    state.fileId,
-    state.fileName,
-    state.setFileId,
-    state.setFileName,
-    state.isRenameModalOpen,
-    state.isDeleteModalOpen,
-    state.setIsRenameModalOpen,
-    state.setIsDeleteModalOpen,
-  ]);
+  const [setFileId, setFileName, setIsRenameModalOpen, setIsDeleteModalOpen] =
+    useAppStore((state) => [
+      state.setFileId,
+      state.setFileName,
+      state.setIsRenameModalOpen,
+      state.setIsDeleteModalOpen,
+    ]);
 
   const openDeleteModal = (fileId: string) => {
     setFileId(fileId);
@@ -92,6 +81,8 @@ export function DataTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >
+                <DeleteModal />
+
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {cell.column.id === "timestamp" ? (
@@ -122,13 +113,13 @@ export function DataTable<TData, TValue>({
                   </TableCell>
                 ))}
                 <TableCell key={(row.original as FileType).id}>
-                  <Button variant={"outline"}>
-                    <TrashIcon
-                      size={20}
-                      onClick={() =>
-                        openDeleteModal((row.original as FileType).id)
-                      }
-                    />
+                  <Button
+                    variant={"outline"}
+                    onClick={() =>
+                      openDeleteModal((row.original as FileType).id)
+                    }
+                  >
+                    <TrashIcon size={20} />
                   </Button>
                 </TableCell>
               </TableRow>
