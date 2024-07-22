@@ -14,6 +14,7 @@ import { useUser } from "@clerk/nextjs";
 import { deleteObject, ref } from "firebase/storage";
 import { db, storage } from "@/firebase";
 import { deleteDoc, doc } from "firebase/firestore";
+import { toast } from "./ui/use-toast";
 
 function DeleteModal() {
   const { user } = useUser();
@@ -32,10 +33,12 @@ function DeleteModal() {
     const fileRef = ref(storage, `users/${user.id}/files/${fileId}`);
 
     try {
+      toast({ description: "Deleting..." });
       deleteObject(fileRef)
         .then(() => {
           deleteDoc(doc(db, "users", user.id, "files", fileId)).then(() => {
             console.log("Deleted");
+            toast({ description: "File deleted successfully" });
           });
         })
         .finally(() => {
@@ -44,6 +47,10 @@ function DeleteModal() {
         });
     } catch (error) {
       console.error(error);
+      toast({
+        description: "Failed to delete the file",
+        variant: "destructive",
+      });
       setIsDeleteModalOpen(false);
     }
   };

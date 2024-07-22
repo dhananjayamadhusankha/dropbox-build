@@ -1,12 +1,19 @@
-"use client"
+"use client";
 
 import { db, storage } from "@/firebase";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
-import { addDoc, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useState } from "react";
 import DropzoneComponent from "react-dropzone";
+import { toast } from "./ui/use-toast";
 
 function Dropzone() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -30,27 +37,43 @@ function Dropzone() {
 
     setLoading(true);
 
-    const docRef = await addDoc(collection(db, "users", user.id, "files"), {
-      userId: user.id,
-      fullName: user.fullName,
-      profileImage: user.imageUrl,
-      fileName: selectedFiles.name,
-      type: selectedFiles.type,
-      size: selectedFiles.size,
-      timestamp: serverTimestamp(),
-    });
+    toast({ description: "Uploading..." });
 
-    const imageRef = ref(storage, `users/${user.id}/files/${docRef.id}`);
+    try {
+      const docRef = await addDoc(collection(db, "users", user.id, "files"), {
+        userId: user.id,
+        fullName: user.fullName,
+        profileImage: user.imageUrl,
+        fileName: selectedFiles.name,
+        type: selectedFiles.type,
+        size: selectedFiles.size,
+        timestamp: serverTimestamp(),
+      });
 
-    uploadBytes(imageRef, selectedFiles).then(async (snapshot) => {
-        const downloadUrl = await getDownloadURL(imageRef)
+      const imageRef = ref(storage, `users/${user.id}/files/${docRef.id}`);
 
-        await updateDoc(doc(db, "users", user.id, "files", docRef.id),{
-            downloadUrl: downloadUrl
+      uploadBytes(imageRef, selectedFiles)
+        .then(async (snapshot) => {
+          const downloadUrl = await getDownloadURL(imageRef);
+
+          await updateDoc(doc(db, "users", user.id, "files", docRef.id), {
+            downloadUrl: downloadUrl,
+          });
         })
-    })
-
-    setLoading(false);
+        .then(() => {
+          console.log("Uploaded successfully...");
+          toast({ description: "File uploaded successfully..." });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } catch (error) {
+      toast({
+        description: "Failed to upload the file",
+        variant: "destructive",
+      });
+      setLoading(false);
+    }
   };
 
   //max size 20MB

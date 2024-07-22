@@ -13,6 +13,7 @@ import { useUser } from "@clerk/nextjs";
 import { doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { db } from "@/firebase";
+import { toast } from "./ui/use-toast";
 
 function RenameModal() {
   const { user } = useUser();
@@ -31,18 +32,25 @@ function RenameModal() {
     try {
       const fileType = fileName.substring(fileName.lastIndexOf("."));
       const newFileName = `${input}${fileType}`;
+
+      toast({ description: "Renaming..." });
       await updateDoc(doc(db, "users", user.id, "files", fileId), {
         fileName: newFileName,
       })
         .then(() => {
           console.log("Updated the file");
           setInput("");
+          toast({ description: "File renamed successfully" });
         })
         .finally(() => {
           setIsRenameModalOpen(false);
         });
     } catch (error) {
       console.error(error);
+      toast({
+        description: "Failed to rename the file",
+        variant: "destructive",
+      });
       setIsRenameModalOpen(false);
     }
   };

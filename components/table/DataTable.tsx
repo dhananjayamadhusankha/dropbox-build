@@ -104,10 +104,10 @@ export function DataTable<TData, TValue>({
                             (row.original as FileType).fileName
                           )
                         }
-                      ><p className="line-clamp-1 md:line-clamp-2">
-
-                        {cell.getValue() as string}{" "}
-                      </p>
+                      >
+                        <p className="line-clamp-1 md:line-clamp-2">
+                          {cell.getValue() as string}{" "}
+                        </p>
                         <Pencil size={15} className="ml-2" />
                       </p>
                     ) : (
@@ -118,7 +118,7 @@ export function DataTable<TData, TValue>({
                 <TableCell key={(row.original as FileType).id}>
                   <Button
                     variant={"outline"}
-                    className="hover:bg-red-800"
+                    className="hover:bg-red-800 hover:text-white dark:text-white"
                     onClick={() =>
                       openDeleteModal((row.original as FileType).id)
                     }
