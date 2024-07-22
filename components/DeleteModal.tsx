@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
+import { Button } from "./ui/button";
 import { useAppStore } from "@/store/store";
 import { useUser } from "@clerk/nextjs";
 import { deleteObject, ref } from "firebase/storage";
@@ -60,18 +60,18 @@ function DeleteModal() {
         <DialogFooter className="flex flex-row items-center space-x-2">
           <Button
             className="flex-1 px-3"
+            type="button"
+            onClick={() => setIsDeleteModalOpen(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            className="flex-1 px-3"
             type="submit"
             variant={"destructive"}
             onClick={() => deleteFile()}
           >
             Delete
-          </Button>
-          <Button
-            className="flex-1 px-3"
-            type="button"
-            onClick={() => setIsDeleteModalOpen(false)}
-          >
-            Cancel
           </Button>
         </DialogFooter>
       </DialogContent>

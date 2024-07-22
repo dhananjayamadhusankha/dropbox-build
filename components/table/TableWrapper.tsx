@@ -42,7 +42,7 @@ function TableWrapper({ skeletonFiles }: { skeletonFiles: FileType[] }) {
   if (docs?.docs.length === undefined)
     return (
       <div className="flex flex-col">
-        <Button variant={"outline"} className="ml-auto w-36 h-10 mb-5">
+        <Button variant={"outline"} className="ml-auto w-32 h-10 mb-5">
           <Skeleton className="h-5 w-full" />
         </Button>
 
