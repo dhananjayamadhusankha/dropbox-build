@@ -14,6 +14,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useState } from "react";
 import DropzoneComponent from "react-dropzone";
 import { toast } from "./ui/use-toast";
+import { CircleArrowDown } from "lucide-react";
 
 function Dropzone() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -95,12 +96,13 @@ function Dropzone() {
             <div
               {...getRootProps()}
               className={cn(
-                "flex justify-center border-2 border-dashed h-52 p-5 items-center rounded-lg w-full",
+                "flex flex-col space-y-2 justify-center border-1 border-dashed h-52 p-5 items-center rounded-lg w-full",
                 isDragActive
                   ? "bg-dropbox text-white animate-pulse"
                   : "text-slate-400 bg-slate-100/50 dark:bg-slate-800/80"
               )}
             >
+              <CircleArrowDown size={50} className="animate-bounce" />
               <input {...getInputProps()} />
               {!isDragActive && "Click here or drop a file to upload!"}
               {isDragActive && "Drop to upload this file!"}

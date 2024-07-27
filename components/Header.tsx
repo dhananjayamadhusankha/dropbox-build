@@ -10,15 +10,15 @@ import { Button } from "./ui/button";
 
 function Header() {
   return (
-    <header className="flex items-center justify-between px-7 py-4">
+    <header className="flex items-center justify-between px-4 py-4">
       <Link href="/" className="flex items-center space-x-4">
-        <div className="bg-dropbox w-fit p-2">
-          <Image src={DropboxLogo} alt="dropbox logo" width={30} />
+        <div className="bg-dropbox w-fit p-2 rounded-sm">
+          <Image src={DropboxLogo} alt="dropbox logo" width={30} className="" />
         </div>
         <h1 className="font-bold text-2xl">Dropbox</h1>
       </Link>
 
-      <div className="flex items-center space-x-4 pr-3">
+      <div className="flex items-center space-x-4 ">
         <ThemeToggler />
         <SignedOut>
           <Button className="bg-dropbox text-base rounded-xl dark:text-white hover:bg-[#0244c7]">

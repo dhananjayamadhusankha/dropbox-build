@@ -26,6 +26,7 @@ function RenameModal() {
     ]);
 
   const [input, setInput] = useState("");
+  
   const renameFile = async () => {
     if (!user || !fileId) return;
 
